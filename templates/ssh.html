@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<button class="btn btn-small btn-primary" id="manage_ids">Manage SSH Keys</button>
+		<button class="btn btn-small btn-info" id="upload_ssh_keys">Upload SSH Keys</button>
+		<button class="btn btn-small btn-info" id="upload_x509_cert">Upload X.509 Certificate</button>
+		<button class="btn btn-small btn-info" id="back_main">Back to Server List</button>
+	</div>
+</div>
+
+<div id="gateone_container" style="position: relative; width: 100%; height: 40em;">
+		<input type="hidden" id="srvid" value="{{ srvid }}" />
+		<div id="gateone"></div>
+</div>
+
+<div id="invalid_data_dialog" class="modal hide fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-header">
+        <h3 id="label" style="color: #000 !important;">Unable to load SSH session</h3>
+    </div>
+    <div class="modal-body">
+        <h4 id="err_why" style="color: #000 !important;"></h4>
+        <div id="err_msg" style="color: #000 !important;"></div>
+    </div>
+</div>
+{% end %}

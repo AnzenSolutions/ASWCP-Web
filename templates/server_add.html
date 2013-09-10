@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add Server</h1>
+<h6>In order to use ASWCP servers must be added to the account.  Please enter the following information.</h6>
+<div class="msg-div alert" id="alertbox">
+  	<button type="button" class="close" data-dismiss="alert">&times;</button>
+  	<h4><span id="title"></span></h4>
+  	<div id="msg"></div>
+</div>
+<table class="table table-hover table-condensed" style="table-layout: fixed;" id="api_key_list">
+<thead>
+	<tr>
+		<th style="20%;">&nbsp;</th>
+		<th style="80%;">&nbsp;</th>
+	</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><strong>Hostname</strong></td>
+			<td><input type="text" id="host" name="host" class="input-block-level"></td>
+		</tr>
+		<tr>
+			<td><strong>Main IPv4 Address</strong></td>
+			<td><input type="text" id="ipv4" name="ipv4" class="input-block-level"></td>
+		</tr>
+		<tr>
+			<td><strong>Main IPv6 Address</strong></td>
+			<td><input type="text" id="ipv6" name="ipv6" class="input-block-level"></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><button id="add_server" class="btn btn-small btn-primary">Add Server</button></td>
+		</tr>
+	</tbody>
+</table>
+
+<div id="ipv6noipv4" class="modal hide fade" role="dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria=hidden="true">&times;</button>
+		<h3 id="label">IPv6 With No IPv4</h3>
+	</div>
+	<div class="modal-body">
+		<p>You provided an IPv6 address without an IPv4.  Plesae make sure this machine is able to connect via IPv6 as well.</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+{% end %}

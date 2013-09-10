@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+	  {% if msg_type != "" %}
+	  <div class="form-login-notice alert alert-{{ msg_type }}">
+	  	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  	<h4>{{ alert_title }}</h4>
+	  	{% raw msg %}
+	  </div>
+	  {% end %}
+      <form class="form-login" id="login" method="post">
+        <h2 class="form-login-heading">Please sign in</h2>
+        <input type="text" id="user" name="user" class="input-block-level" placeholder="Username">
+        <input type="password" id="pass" name="pass" class="input-block-level" placeholder="Password">
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+        <p><br /><br /><a href="/forgotpassword">Forogt Password</a></p>
+      </form>
+{% end %}

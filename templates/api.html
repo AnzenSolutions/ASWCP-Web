@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+	<div class="row12"><h1>API Management</h1></div>
+	<div class="row12"><p>API keys are used to ensure only those servers you want are managed by ASWCP.  Here you can delete and modify any API keys assigned to your account.</p>
+		<p>To have the daemon successfully communicate with ASWCP, you must first create a challange token (see below).  Once you do that you must call the daemon with the following argument: <span id="api_ref">{{ api_ref }}</span>|&lt;challenge token&gt; replacing &lt;challenge token&gt; with the token that was generated.  After that everything should be smooth sailing.</p></div>
+	<div class="row12"><h3>Add API Key</h3></div>
+	<div class="row12">
+		To create a challange for a daemon <a href="#api_key_add_dialog" role="button" class="btn btn-small btn-link" data-toggle="modal">click here</a>.
+	</div>
+	<div class="row12"><h3>API Keys</h3></div>
+	<div class="row12"><h6>Private keys are truncated to both reduce risk of theft as well as make it easier to present.</h6></div>
+	<div class="row12">
+		<table class="table table-hover table-condensed" style="table-layout: fixed;" id="api_key_list">
+			<thead>
+				<tr>
+					<th width="3%;">&nbsp;</th>
+					<th width="14%;">Server</th>
+					<th width="63%;">Public</th>
+					<th width="20%;">Private</th>
+				</tr>
+			</thead>
+			<tbody>{% set tid = 0 %}{% for sid,skeys in keys.iteritems() %}
+				<tr id="key_{{ tid }}">
+					<td>
+						<input type="hidden" id="api_server_{{ skeys['id'] }}" value="{{ skeys['host'] }}" />
+						<input type="hidden" id="api_server_{{ skeys['id'] }}_sid" value="{{ sid }}" />
+						<input type="hidden" id="api_server_{{ skeys['id'] }}_tid" value="{{ tid }}" />
+						<button type="submit" class="api_key_delete btn btn-small btn-danger" value="{{ skeys['id'] }}" data-toggle="tooltip" data-title="Delete"><i class="icon-remove icon-white"></i></button>
+					</td>
+					<td>{{ skeys['host'] }}</td>
+					<td>{{ skeys['public'] }}</td>
+					<td>{{ skeys['private'][0:20] }}...</td>
+				</tr>
+				{% set tid = tid + 1 %}{% end %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="api_key_delete" class="modal hide fade" role="dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria=hidden="true">&times;</button>
+		<h3 id="label">Delete API Key for <span id="api_key_delete_server"></span>?</h3>
+	</div>
+	<div class="modal-body">
+		<p>This is irreversible and ASWCP will not be able to connect to this server again until a new API key is generated.</p>
+		<p>
+			<div class="alert" id="delete_api_key_msgbox" style="display: none;">
+	  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  			<h4>API Key Deleteion</h4>
+	  			<div id="dak_msg"></div>
+			</div>
+		</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+		<button id="conf_delete" class="btn btn-danger" value="">Confirm Deletion</button>
+	</div>
+</div>
+
+<div id="api_key_add_dialog" class="modal hide fade" role="dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria=hidden="true">&times;</button>
+		<h3 id="label">Create API Key</h3>
+	</div>
+	<div class="modal-body">
+		<p>
+			<div class="alert" id="add_api_key_msgdiv">
+				<h4 id="add_key_title"></h4>
+				<input type="text" class="input-block-level" id="add_key_msg" />
+				<p id="add_key_submsg"></p>
+			</div>
+			Click on the following button to generate a challenge response.  Once a challenge response is created, run the ASWCP daemon with the above highlighted text.<br /><br /><button class="btn btn-small btn-primary" id="genc">Generate Challenge</button>
+		</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" id="key_add_close" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+{% end %}

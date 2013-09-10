@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+	<div class="span12"><h1>Manage Account</h1></div>
+	<div class="span12"><h3>Change Password</h3></div>
+	<div class="span12">
+		{% if msg_type != "" and cat == 1 %}
+	  <div class="form-login-notice alert alert-{{ msg_type }}">
+	  	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  	<h4>{{ alert_title }}</h4>
+	  	{% raw msg %}
+	  </div>
+	  {% end %}
+      <form class="form-login" id="reset_pw" method="post">
+        <p>To change your password please enter your current password as well as your new password twice.</p>
+        <input type="password" id="curpw" name="curpw" autocomplete="off" class="input-block-level" placeholder="Current Password" />
+        <input type="password" id="newpw1" name="newpw1" autocomplete="off" class="input-block-level" placeholder="New Password" />
+        <input type="password" id="newpw2" name="newpw2" autocomplete="off" class="input-block-level" placeholder="Re-type New Password" />
+        <button class="btn btn-primary" name="acct_act" value="changepw" type="submit">Change</button>
+      </form>
+    </div>
+    <div class="span12"><h3>Update Email</h3></div>
+    <div class="span12">
+		{% if msg_type != "" and cat == 2 %}
+	  <div class="form-login-notice alert alert-{{ msg_type }}">
+	  	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  	<h4>{{ alert_title }}</h4>
+	  	{% raw msg %}
+	  </div>
+	  {% end %}
+      <form class="form-login" id="change_email" method="post">
+        <p>To update your email provide your password and the new email address.</p>
+        <input type="password" id="curpw" name="curpw" autocomplete="off" class="input-block-level" placeholder="Current Password" />
+        <input type="text" id="email" name="email" class="input-block-level" value="{{ email }}" />
+        <button class="btn btn-primary" name="acct_act" value="changeemail" type="submit">Change</button>
+      </form>
+    </div>
+</div>
+{% end %}
