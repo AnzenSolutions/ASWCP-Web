@@ -1,0 +1,2 @@
+table { table-layout: fixed; }
+table th, table td { overflow: hidden; }
