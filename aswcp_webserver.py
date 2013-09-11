@@ -36,7 +36,7 @@ _BASE_DEFAULTS = {
 	"sql_pass" : "c",
 	'sql_db' : "aswcp",
 	"goport" : 8080,
-	"gohost" : "localhost",
+	"gohost" : "cp.anzensolutions.com",
 	"ssl_cert" : "ssl.crt",
 	"ssl_key" : "ssl.key",
 	
