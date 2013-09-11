@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Web Panel Config Settings</h3>
+<table class="table table-hover table-condensed" style="position: relative;" id="server_list">
+	<thead>
+		<tr>
+			<th width="25%">Name</th>
+            <th width="75%">Value</th>
+		</tr>
+	</thead>
+	<tbody>{% for k,v in conf.iteritems() %}
+		<tr><td>{{ k }}</td><td>{{ v }}</td>
+		</tr>
+		{% end %}
+	</tbody>
+</table>
+{% end %}
