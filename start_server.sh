@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nohup python aswcp_webserver.py &
+nohup python server.py &
