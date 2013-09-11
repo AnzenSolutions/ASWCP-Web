@@ -44,6 +44,9 @@ if [ "$CUR_VER" != "$NEW_VER" ]; then
     fi
 
     echo "ASWCP Web Panel updated to $(cat version)."
+    echo "Restarting web panel..."
+    ./kill_server.sh
+    ./start_server.sh
 fi
 
 exit 0
