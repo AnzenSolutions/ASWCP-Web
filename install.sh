@@ -9,6 +9,8 @@ CURL_BIN=$(which curl | awk '{print $1}')
 
 URL="https://github.com/AnzenSolutions/ASWCP-Web/archive/master.tar.gz"
 
+SUFFIX=""
+
 if [ -z "$GIT_BIN" ]; then
     echo "git not installed, attempting install with wget..."
 else
@@ -30,7 +32,8 @@ fi
 
 if [ -e "master.tar.gz" ]; then
     tar -xf master.tar.gz
+    SUFFIX="-master"
 fi
 
-echo "ASWCP Web Panel installed into ASWCP-Web."
+echo "ASWCP Web Panel installed into ASWCP-Web$SUFFIX."
 exit 0
