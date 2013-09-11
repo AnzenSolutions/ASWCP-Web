@@ -10,3 +10,13 @@ class system(HandlersBase):
     
     def get(self):
         self.show("system", conf=self.sysconf.__dict__)
+    
+    def post(self):
+        act = self.get_request("act", "")
+        
+        if act == "edit_conf":
+            self.write("0|Unable to edit config, feature not enabled.")
+        else:
+            self.write("-1|Unknown action")
+        
+        self.finish()
