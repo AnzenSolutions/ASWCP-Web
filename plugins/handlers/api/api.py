@@ -16,7 +16,9 @@ class api(HandlersBase):
 
     CSS_FILES = ["api"]
     JS_FILES = ["api"]
-
+    
+    PAGE_TITLE = "API Management"
+    
     def create_public_key(self, bits=2048):
         charlist = digits+ascii_uppercase+ascii_lowercase
         pairs = []
