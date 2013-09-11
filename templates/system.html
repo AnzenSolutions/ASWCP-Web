@@ -9,7 +9,7 @@
 		</tr>
 	</thead>
 	<tbody>{% for k,v in conf.iteritems() %}
-		<tr><td>{{ k }}</td><td>{{ v }}</td>
+		<tr><td>{{ k }}</td><td>{% if "pass" in k %}{{ "*"*len(v) }}{% else %}{{ v }}{% end %}</td>
 		</tr>
 		{% end %}
 	</tbody>
