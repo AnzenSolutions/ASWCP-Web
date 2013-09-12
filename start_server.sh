@@ -1,4 +1,4 @@
 #!/bin/sh
 
-touch nohup.out
+echo "" > nohup.out
 nohup python server.py &
