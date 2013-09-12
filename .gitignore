@@ -1,2 +1,4 @@
 *.pyc
 nohup.out
+*.key
+*.crt
