@@ -42,20 +42,21 @@ if not exists(C_F) or not exists(K_F):
     k.generate_key(crypto.TYPE_RSA, 2048)
     
     cert = crypto.X509()
+    issuer = crypto.X509()
     
-    cert.get_subject().C = konf['countryName_default']
-    cert.get_subject().ST = konf['stateOrProvinceName_default']
-    cert.get_subject().L = konf['localityName']
-    cert.get_subject().O = konf['0.organizationName_default']
-    cert.get_subject().OU = konf['organizationalUnitName']
-    cert.get_subject().CN = CN
+    issuer.get_subject().C = konf['countryName_default']
+    issuer.get_subject().ST = konf['stateOrProvinceName_default']
+    issuer.get_subject().L = konf['localityName']
+    issuer.get_subject().O = konf['0.organizationName_default']
+    issuer.get_subject().OU = konf['organizationalUnitName']
+    issuer.get_subject().CN = CN
     
     cert.set_serial_number(int(time()))
     
     cert.gmtime_adj_notBefore(0)
     cert.gmtime_adj_notAfter(315360000)
     
-    cert.set_issuer(cert.get_subject())
+    cert.set_issuer(issuer.get_subject())
     
     cert.set_pubkey(k)
     
