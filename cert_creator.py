@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from tools.sslconfparser import scp
 
 try:
