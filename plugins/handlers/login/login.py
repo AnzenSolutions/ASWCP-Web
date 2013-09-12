@@ -25,13 +25,13 @@ class login(HandlersBase):
     	pw = self.get_argument('pass', "")
 
         if un != "" and pw != "":
-            user = self.db.users.select(self.db.users.id).where(
-                (self.db.users.username == un) & (self.db.users.pw == self.text2hash(pw))
-            ).limit(1).get()
-
             try:
+                user = self.db.users.select(self.db.users.id).where(
+                    (self.db.users.username == un) & (self.db.users.pw == self.text2hash(pw))
+                ).limit(1).get()
+            
                 uid = user.id
-            except AttributeError:
+            except:
                 self.show("login", msg="Invalid username or password provided.", msg_type="error")
                 self.finish()
 
