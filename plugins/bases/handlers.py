@@ -184,4 +184,4 @@ class HandlersBase(tornado.web.RequestHandler, PluginBase):
 
 		#db.insert(tbl="syserr").data({"id" : eid, "ts" : now(), "err" : err, "tb" : trace, "user_id" : self.get_uid()}).run
 
-		self.show("%s/templates/message.html" % path, path=path, page_title="Error", ADMIN=self.get_uid, message=msg)
+		self.show("%s/templates/message" % path, path=path, ADMIN=self.get_uid, message=msg)
