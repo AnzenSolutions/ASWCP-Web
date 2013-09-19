@@ -85,15 +85,14 @@ var update_status = function(){
 }
 
 var check_reports = function(){
-    $("#server_list > tr").each(function(){
+    $("tr.server_entry").each(function(){
         var sid = $(this).attr("data-sid");
         
         $.post("/",
             {action : "check_report", server : sid},
             function (data){
                 var ret = data.split("|");
-                
-                var id = "server_"+ret[0]+"_alert";
+                var id = "#server_"+ret[0]+"_alert";
         
                 if(ret[1] == "1"){
                     if(!$(id).hasClass("icon-exclamation-sign")){
@@ -107,6 +106,11 @@ var check_reports = function(){
             });
     });
 }
+
+/**
+ * Any unread reports will be flashed so the user is aware of them.
+ **/
+// setInterval("$('.icon-exclamation-sign').toggle();", 250);
 
 /**
  * Run update_status function every x seconds.
@@ -291,68 +295,32 @@ $(".server_action").click(function(e){
 	}
 });
 
-$(".add_api").click(function(e){
-	e.preventDefault();
-
-	var id = $(this).attr('id').substring(11);
-	$("#api_key_add_dialog").modal("show");
-
-	var msgbox = $("#msgbox_div");
-	msgbox.hide();
-
-	var host = $("#server_"+id+"_host").text();
-	$("#api_key_server").text(host);
-
-	$("#api_key_add_sid").val(id);
-});
-
-$("#genpk").click(function(e){
-	e.preventDefault();
-
-	$("#pubk").val(randString());
-});
-
-/**
- * Work on dynamically disabling/enabling api key button based on if input fields have text or not.
- **/
-$("#api_key_add_dialog input").blur(function(){
-	if(!$(this).val()){
-		if(!$("#savek").hasClass("disabled"))
-			$("#savek").addClass("dsiabled");
-	} else if($(this).val()){
-		if($("#savek").hasClass("disabled"))
-			$("#savek").removeClass("disabled");
-	}
-});
-
-$("#savek").click(function(e){
-	e.preventDefault();
-
-	var id = $("#api_key_add_sid").val();
-	var pub = $("#pubk").val();
-	var pri = $("#privk").val();
-	var api_stat = $("#server_"+id+"_api_status");
-
-	$.post("/api", 
-        {pub : pub, priv : pri, api_act : "savek", server : id}, 
-        function(data){
-            var n = data.split("|");
-            var type = n[0];
-            var msg = n[1];
-
-            if(type == "e"){
-                $("#msgbox_div").addClass("alert-error");
-                $("#msgbox_header").text("Unable to add key!");
-            } else{
-            	$("#msgbox_div").addClass("alert-success");
-                $("#api_key_add_dialog :input").val("");
-                $("#msgbox_header").text("Key added!");
-                api_stat.removeClass("icon-remove-sign").addClass("icon-ok-sign");
-                $("#server_api_"+id).removeClass("add_api");
+$(".server_entry").on('click', '.icon-exclamation-sign', function(e){
+    e.preventDefault();
+    
+    var sid = $(this).attr('data-sid');
+    var dateconv = function(ind){
+        var date = new Date(ind * 1000);
+        return date.toLocaleString().trim();
+    }
+    
+    $("#reports_dialog_body").html("<div class=\"accordion\" id=\"accordion2\">");
+    
+    $.post("/",
+        {action : "fetch_reports", server : sid},
+        function (data){
+            data = JSON.parse(data);
+            
+            var status = ["error", "success", "info"];
+            var stat_id = 0;
+            
+            if(data['status'] > -1 && data['status'] < 3){
+                stat_id = data['status'];
             }
-
-            $("#msgbox_msg").html(msg);
-            $("#msgbox_div").show();
-        }
-    );
+            
+            $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+"</a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><b>Date</b>"+dateconv(data['ts'])+"<br /><br />"+data['msg']+"</div></div></div>");
+        });
+    
+    $("#reports_dialog_body").append("</div>");
+    $("#reports_dialog").modal('show');
 });
