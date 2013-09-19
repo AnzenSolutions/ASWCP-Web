@@ -84,11 +84,40 @@ var update_status = function(){
 	});
 }
 
+var check_reports = function(){
+    $("#server_list > tr").each(function(){
+        var sid = $(this).attr("data-sid");
+        
+        $.post("/",
+            {action : "check_report", server : sid},
+            function (data){
+                var ret = data.split("|");
+                
+                var id = "server_"+ret[0]+"_alert";
+        
+                if(ret[1] == "1"){
+                    if(!$(id).hasClass("icon-exclamation-sign")){
+                        $(id).addClass("icon-exclamation-sign");
+                    }
+                } else{
+                    if($(id).hasClass("icon-exclamation-sign")){
+                        $(id).removeClass("icon-exclamation-sign");
+                    }
+                }
+            });
+    });
+}
+
 /**
  * Run update_status function every x seconds.
  * Change '5' to # in seconds (so 10 seconds = 1000 * 10).
  **/
 setInterval(update_status, 1000*5);
+
+/**
+ * Check for new reports every 2 seconds (increment if there are a lot of servers)
+ **/
+setInterval(check_reports, 1000*2);
 
 /**
  * Deleting a server?  Alright!

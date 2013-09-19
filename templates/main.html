@@ -24,8 +24,9 @@
 		</tr>
 	</thead>
 	<tbody>{% set tid = 0 %}{% for host,data in servers.iteritems() %}
-		<tr id="server_{{ data['id'] }}_row"><td><i id="server_{{ data['id'] }}" class="status icon-{% if data['status'] == 2 %}warning-sign{% elif data['status'] == 0 %}arrow-down{% else %}arrow-up{% end %}" alt="{{ data['id'] }}" data-toggle="tooltip" data-title="{% if data['status'] == 0 %}Down{% elif data['status'] == 1 %}Up{% elif data['status'] == 2 %}Unknown{% else %}{{ data['status'] }}{% end %}" data-placement="left"></i></td>
-			<td><a href="javascript:void(0);" id="server_api_{{ data['id'] }}"{% if not data['has_api'] %} class="add_api"{% end %}><i id="server_{{ data['id'] }}_api_status" class="icon-{% if data['has_api'] %}ok{% else %}remove{% end %}-sign" data-toggle="tooltip" data-title="{% if data['has_api'] %}API Key Exists{% else %}Missing API Key{% end %}"></i></a></td>
+		<tr id="server_{{ data['id'] }}_row" data-sid="{{ data['id'] }}"><td><i id="server_{{ data['id'] }}" class="status icon-{% if data['status'] == 2 %}warning-sign{% elif data['status'] == 0 %}arrow-down{% else %}arrow-up{% end %}" alt="{{ data['id'] }}" data-toggle="tooltip" data-title="{% if data['status'] == 0 %}Down{% elif data['status'] == 1 %}Up{% elif data['status'] == 2 %}Unknown{% else %}{{ data['status'] }}{% end %}" data-placement="left"></i></td>
+			<!-- <td><a href="javascript:void(0);" id="server_api_{{ data['id'] }}"{% if not data['has_api'] %} class="add_api"{% end %}><i id="server_{{ data['id'] }}_api_status" class="icon-{% if data['has_api'] %}ok{% else %}remove{% end %}-sign" data-toggle="tooltip" data-title="{% if data['has_api'] %}API Key Exists{% else %}Missing API Key{% end %}"></i></a></td> -->
+            <td><i id="server_{{ data['id'] }}_alert"></i></td>
 			<td><span class="editable" id="server_{{ data['id'] }}_host"><a href="/server/{{ data['id'] }}">{{ host }}</a></span></td>
 			<td><span class="editable" id="server_{{ data['id'] }}_ipv4">{{ data['ipv4'] }}</span></td>
 			<td><span class="editable" id="server_{{ data['id'] }}_ipv6">{{ data['ipv6'] }}</td>
