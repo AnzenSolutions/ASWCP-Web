@@ -133,18 +133,22 @@ class MainHandler(HandlersBase):
         # Check to see if there's any new reports for server
         elif act == "check_report":
             if server != 0:
-                new_reports = self.db.reports.select(self.db.reports.id).where((self.db.reports.ts >= time()) & (self.db.reports.unread == True)).count()
+                new_reports = 0
+                
+                new_reports = self.db.reports.select(self.db.reports.id).where((self.db.reports.unread == "t") & (self.db.reports.server == server)).count()
                 
                 if new_reports > 0:
                     self.write("%d|1" % server)
                 else:
-                    self.write("%d|0" % server)
+                    self.write("%d|%d" % (server, new_reports))
         
         # Fetch all unread reports for specified server
         elif act == "fetch_reports":
             if server != 0:
-                reports = self.db.reports.select().where((self.db.reports.unread == True) & (self.db.reports.server_id == server))
-                self.write(json.dumps(reports))
+                reports = self.db.reports.select().where((self.db.reports.unread == "t") & (self.db.reports.server == server)).order_by(self.db.reports.ts.desc()).dicts()
+                
+                for report in reports.iterator():
+                    self.write(json.dumps(report))
         
         # When user clicks to read report mark it as read
         elif act == "update_report":
