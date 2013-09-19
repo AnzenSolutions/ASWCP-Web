@@ -31,10 +31,12 @@ class Api(BaseModel):
 
 class Reports(BaseModel):
     id = PrimaryKeyField()
-    server_id = ForeignKeyField(Servers, cascade=True)
+    server = ForeignKeyField(Servers, cascade=True)
     ts = IntegerField()
     msg = TextField()
     unread = BooleanField()
+    title = CharField(max_length=50)
+    status = IntegerField()
     
 users = Users
 servers = Servers
