@@ -128,10 +128,20 @@ class MainHandler(HandlersBase):
                     done = self.db.jobqueue.create(server=server,ts=int(time()),cmd="update").get()
                 except:
                     self.db.database.rollback()
+                
+                self.write(self.redis.get("cron_next_run"))
         elif act == "shutdown_server":
             if server != 0:
                 server_info = self.db.servers.select(self.db.servers.ipv4).where(self.db.servers.id==server).get()
                 self.client(server_info.ipv4, msg="shutdown", pub=server_keys['public'], priv=server_keys['private'])
+        elif act == "cc":
+            if server != 0:
+                server_info = self.db.servers.select(self.db.servers.ipv4).where(self.db.servers.id==server).get()
+                self.db.jobqueue.create(server=server,ts=int(time()),cmd="sysexec %s" % self.get_argument("cmd", ""))
+                #except:
+                #    self.db.database.rollback()
+                
+                self.write(self.redis.get("cron_next_run"))
         else:
             self.write("09999")
 
