@@ -1,5 +1,7 @@
 from plugins.bases.handlers import HandlersBase
 
+import json
+
 class reports(HandlersBase):
     WEB_PATH = r"/reports"
     STORE_ATTRS = True
