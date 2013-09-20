@@ -154,14 +154,13 @@ $(".update").click(function(e){
 	e.preventDefault();
 
 	var id = $(this).val();
-
+    
+    $("#update_server_dialog").modal("show");
+	$("#usd_srv").text($("#server_"+id+"_host").text());
+    $("#update_output").html("Once the system's update process has finished a report will be viewable.");
+            
 	$.post("/",
-		{action: "update_server", server : id},
-		function(data){
-			$("#update_server_dialog").modal("show");
-			$("#usd_srv").text($("#server_"+id+"_host").text());
-			$("#update_output").html(data.replace(/\n/g, '<br />'));
-		}
+		{action: "update_server", server : id}
 	);
 });
 
