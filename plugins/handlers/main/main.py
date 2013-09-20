@@ -122,9 +122,12 @@ class MainHandler(HandlersBase):
                 self.write("03")
         elif act == "update_server":
             if server != 0:
-                server_info = self.db.servers.select().where(self.db.servers.id==server).get()
-                data = self.client(server_info.ipv4, msg="update", pub=server_keys['public'], priv=server_keys['private'])
-                self.write(data)
+                done = None
+                
+                try:
+                    done = self.db.jobqueue.create(server=server,ts=int(time()),cmd="update").get()
+                except:
+                    self.db.database.rollback()
         elif act == "shutdown_server":
             if server != 0:
                 server_info = self.db.servers.select(self.db.servers.ipv4).where(self.db.servers.id==server).get()
