@@ -88,7 +88,7 @@ var check_reports = function(){
     $("tr.server_entry").each(function(){
         var sid = $(this).attr("data-sid");
         
-        $.post("/",
+        $.post("/reports",
             {action : "check_report", server : sid},
             function (data){
                 var ret = data.split("|");
@@ -306,7 +306,7 @@ $(".server_entry").on('click', '.icon-exclamation-sign', function(e){
     
     $("#reports_dialog_body").html("<div class=\"accordion\" id=\"accordion2\">");
     
-    $.post("/",
+    $.post("/reports",
         {action : "fetch_reports", server : sid},
         function (data){
             data = JSON.parse(data);
@@ -329,7 +329,7 @@ $("#reports_dialog_body").on('click', '.accordion-heading', function(e){
     var sid = $(this).attr('data-sid');
     var rid = $(this).attr('data-rid');
     
-    $.post("/",
+    $.post("/reports",
     {action : "update_report", server : sid, report_id : rid},
     function (data){
         console.log("data: "+data);
