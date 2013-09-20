@@ -160,8 +160,33 @@ $(".update").click(function(e){
     $("#update_output").html("Once the system's update process has finished a report will be viewable.");
             
 	$.post("/",
-		{action: "update_server", server : id}
-	);
+		{action: "update_server", server : id},
+        function (next_run){
+            $("#update_output").append("<br /><br />Next run time for cron: "+next_run);
+        });
+});
+
+$(".cc").click(function(e){
+	e.preventDefault();
+
+	var id = $(this).val();
+    
+    $("#cc_dialog").modal("show");
+	$("#ccd_srv").text($("#server_"+id+"_host").text());
+    $("#ccd_srv").attr("data-sid", id);
+});
+
+$("#perform_cc").click(function(e){
+    e.preventDefault();
+    var id = $("#ccd_srv").attr("data-sid");
+    var cmd = $("#cc_cmd").val();
+    console.log(cmd);
+    $.post("/",
+    {action : "cc", server : id, cmd : cmd},
+    function (next_run){
+        $("#cc_notice").html("<br /><br />"+cmd+" is set to be processed at "+next_run+".  Once the results are returned a report will be generated and viewable.");
+    }
+    );
 });
 
 $(".shutdown").click(function(e){
@@ -307,17 +332,18 @@ $(".server_entry").on('click', '.icon-exclamation-sign', function(e){
     
     $.post("/reports",
         {action : "fetch_reports", server : sid},
-        function (data){
-            data = JSON.parse(data);
-            
+        function (dump){
+            dump = JSON.parse(dump);
             var status = ["error", "success", "info"];
             var stat_id = 0;
             
-            if(data['status'] > -1 && data['status'] < 3){
-                stat_id = data['status'];
-            }
-            
-            $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\" data-sid=\""+sid+"\" data-rid=\""+data['id']+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+"</a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><b>Date</b>"+dateconv(data['ts'])+"<br /><br />"+data['msg']+"</div></div></div>");
+            $.each(dump, function(key, data){
+                if(data['status'] > -1 && data['status'] < 3){
+                    stat_id = data['status'];
+                }
+                
+                $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\" data-sid=\""+sid+"\" data-rid=\""+data['id']+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+"</a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><b>Date</b>&nbsp;&nbsp;"+dateconv(data['ts'])+"<br /><br />"+data['msg'].replace(/\n/g, '<br />')+"</div></div></div>");
+            });
         });
     
     $("#reports_dialog_body").append("</div>");
@@ -329,8 +355,6 @@ $("#reports_dialog_body").on('click', '.accordion-heading', function(e){
     var rid = $(this).attr('data-rid');
     
     $.post("/reports",
-    {action : "update_report", server : sid, report_id : rid},
-    function (data){
-        console.log("data: "+data);
-    });
+    {action : "update_report", server : sid, report_id : rid}
+    );
 });

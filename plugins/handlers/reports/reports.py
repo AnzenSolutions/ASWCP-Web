@@ -30,10 +30,15 @@ class reports(HandlersBase):
                     
             # Fetch all unread reports for specified server
             elif act == "fetch_reports":
+                the_reps = []
+                
                 reports = self.db.reports.select().where((self.db.reports.unread == "t") & (self.db.reports.server == server)).order_by(self.db.reports.ts.desc()).dicts()
                     
                 for report in reports.iterator():
-                    self.write(json.dumps(report))
+                    the_reps.append(report)
+                    # self.write(json.dumps(report))
+                
+                self.write(json.dumps(the_reps))
         
             # When user clicks to read report mark it as read
             elif act == "update_report":

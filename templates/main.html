@@ -114,31 +114,6 @@
 	</div>
 </div>
 
-<div id="api_key_add_dialog" class="modal hide fade" role="dialog">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria=hidden="true">&times;</button>
-		<h3 id="label">Add API Key for <span id="api_key_server"></span>?</h3>
-	</div>
-	<div class="modal-body">
-		<p><div class="msg-div alert" id="msgbox_div">
-	  	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	  	<h4 id="msgbox_header"></h4>
-	  	<div id="msgbox_msg"></div>
-	</div>
-	<form class="form" id="api_key_add">
-			<input type="text" name="pubk" value="" id="pubk" class="input-block-level" placeholder="Public key" />
-			<br />
-			<button class="btn btn-small btn-primary" id="genpk" value="genpk">Generate Public Key</button><br /><br />
-			<input type="text" name="privk" value="" id="privk" class="input-block-level" placeholder="Private key" />
-			<br /><input type="hidden" id="api_key_add_sid" value="" />
-		</form></p>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
-		<button id="savek" class="btn btn-inverse disabled">Add API Key</button>
-	</div>
-</div>
-
 <div id="update_server_dialog" class="modal hide fade" role="dialog">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria=hidden="true">&times;</button>
@@ -149,6 +124,21 @@
 	<div class="modal-footer">
 		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
 		<button id="perform_update" class="btn btn-danger">Perform Update</button>
+	</div>
+</div>
+
+<div id="cc_dialog" class="modal hide fade" role="dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria=hidden="true">&times;</button>
+		<h3 id="label">Execute Command on <span id="ccd_srv"></span></h3>
+	</div>
+	<div class="modal-body" id="cc_output"><h4>Enter Command:</h4>
+    <input type="text" id="cc_cmd" value="" placeholder="Enter the command to run on the server" />
+    <div id="cc_notice"></div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+		<button id="perform_cc" class="btn btn-danger">Process Command</button>
 	</div>
 </div>
 
