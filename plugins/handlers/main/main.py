@@ -17,19 +17,18 @@ class MainHandler(HandlersBase):
         else:
             s = self.db.servers
             a = self.db.api
-
+            server_list = {}
+            
             servers = s.select(
                 s.id.alias("sid"),s.ipv6.alias("ipv6"),s.hostname.alias("hostname"),s.ipv4.alias("ipv4"),s.added.alias("added"),
                 a.id.alias("aid"),a.private.alias("private"),a.public.alias("public")
             ).join(a, self.db.JOIN_FULL).where(s.user==self.uid)
-
-            server_list = {}
-
+            
             status = 2
 
             ip = ""
             ipv6 = False
-
+            
             for server in servers:
                 status = 2
 
@@ -39,7 +38,8 @@ class MainHandler(HandlersBase):
                 else:
                     ip = server.ipv6
                     ipv6 = True
-
+                
+                
                 if server.api.public != None:
                     status = self.client(ip, ipv6=ipv6, msg="heartbeat", pub=server.api.public, priv=server.api.private)
                     
@@ -51,7 +51,7 @@ class MainHandler(HandlersBase):
                     "has_api" : True if server.api.public != None else False,
                     "registered" : server.added
                 }
-
+                
             self.show("main", servers=server_list)
 
     def post(self):
