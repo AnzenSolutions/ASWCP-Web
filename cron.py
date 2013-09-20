@@ -153,7 +153,7 @@ class Jobs(object):
             status = 0
             
         # try:    
-        db.reports.create(server=job.server,ts=int(time()),msg=data,title=job.cmd,status=status).execute()
+        db.reports.create(server=job.server,ts=int(time()),msg=data,title=job.cmd,status=status)
         self.remove_job(job.id)
         # except:
         #    db.database.rollback()
@@ -180,11 +180,8 @@ class Jobs(object):
         
         [ t.join() for t in threads ]
         
-        print "> Started %d jobs" % jobs
+        # Started %d jobs" % jobs
             
-"""
-Figure out why repot creation does not work.
-"""
 cjob = Jobs()
 
 sched = Scheduler(daemonic=False)
