@@ -51,6 +51,12 @@ pydis = redis.StrictRedis(host=conf.redis_host, port=conf.redis_port, db=conf.re
 """
 Make cron check Redis db for queued up tasks then push them out to the machine, receive input then store in db.  
 Do this in threads so there is no locking of long tasks.
+
+Basic task of this is:
+server_info = self.db.servers.select().where(self.db.servers.id==server).get()
+client(server_info.ipv4, msg="update", pub=server_keys['public'], priv=server_keys['private'])
+
+Replacing "update" w/ command given
 """
 def cron():
     print "testing cron"
