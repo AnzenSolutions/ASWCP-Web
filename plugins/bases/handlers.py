@@ -179,9 +179,6 @@ class HandlersBase(tornado.web.RequestHandler, PluginBase):
 		eid = encode(hashlib.md5(trace + str(time())).digest())
 
 		msg = "Unfortunately an error has occured.  If you believe this is in error, please contact support.<br /><br />"
-		msg += "In contacting support, please also reference the unique ID for this issue: %s" % (eid)
-		msg += "<br /><br />Error: %s" % (err)
-
-		#db.insert(tbl="syserr").data({"id" : eid, "ts" : now(), "err" : err, "tb" : trace, "user_id" : self.get_uid()}).run
-
+		msg += "Error: %s" % (err)
+        
 		self.show("%s/templates/message" % path, path=path, ADMIN=self.get_uid, message=msg)
