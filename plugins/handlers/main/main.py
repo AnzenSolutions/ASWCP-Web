@@ -140,7 +140,7 @@ class MainHandler(HandlersBase):
                 if new_reports > 0:
                     self.write("%d|1" % server)
                 else:
-                    self.write("%d|%d" % (server, new_reports))
+                    self.write("%d|0" % server)
         
         # Fetch all unread reports for specified server
         elif act == "fetch_reports":
@@ -156,6 +156,8 @@ class MainHandler(HandlersBase):
             rid = int(self.get_argument("report_id", 0))
             
             if server != 0 and rid != 0:
+                done = 0
+                
                 try:
                     done = self.db.reports.update(unread=False).where(self.db.reports.id==rid).execute()
                 except:
