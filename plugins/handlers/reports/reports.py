@@ -32,7 +32,13 @@ class reports(HandlersBase):
             elif act == "fetch_reports":
                 the_reps = []
                 
-                reports = self.db.reports.select().where((self.db.reports.unread == True) & (self.db.reports.server == server)).order_by(self.db.reports.ts.desc()).dicts()
+                reports = self.db.reports.select()
+                
+                if self.get_argument("type", 1) == 1:
+                    reports = reports.where(self.db.reports.unread == True)
+                
+                reports = reports.where(self.db.reports.server == server).order_by(self.db.reports.ts.desc()).dicts()
+                # reports = self.db.reports.select().where((self.db.reports.unread == True) & (self.db.reports.server == server)).order_by(self.db.reports.ts.desc()).dicts()
                     
                 for report in reports.iterator():
                     the_reps.append(report)

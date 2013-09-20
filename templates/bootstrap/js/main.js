@@ -319,13 +319,44 @@ $(".server_action").click(function(e){
 	}
 });
 
+$(".reports").click(function(e){
+    e.preventDefault();
+    
+    var sid = $(this).attr('value');
+    var dateconv = function(ind){
+        var date = new Date(ind * 1000);
+        return date.toLocaleString();
+    }
+    
+    $("#reports_dialog_body").html("<div class=\"accordion\" id=\"accordion2\">");
+    
+    $.post("/reports",
+        {action : "fetch_reports", server : sid, type : 0},
+        function (dump){
+            dump = JSON.parse(dump);
+            var status = ["error", "success", "info"];
+            var stat_id = 0;
+            
+            $.each(dump, function(key, data){
+                if(data['status'] > -1 && data['status'] < 3){
+                    stat_id = data['status'];
+                }
+                
+                $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\" data-sid=\""+sid+"\" data-rid=\""+data['id']+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+" <div class=\"pull-right\">"+dateconv(data['ts'])+"</div></a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><pre class=\"pre-scrollable\">"+data['msg'].replace(/\n/g, '<br />')+"</pre></div></div></div>");
+            });
+        });
+    
+    $("#reports_dialog_body").append("</div>");
+    $("#reports_dialog").modal('show');
+});
+
 $(".server_entry").on('click', '.icon-exclamation-sign', function(e){
     e.preventDefault();
     
     var sid = $(this).attr('data-sid');
     var dateconv = function(ind){
         var date = new Date(ind * 1000);
-        return date.toLocaleString().trim();
+        return date.toLocaleString();
     }
     
     $("#reports_dialog_body").html("<div class=\"accordion\" id=\"accordion2\">");
@@ -342,7 +373,7 @@ $(".server_entry").on('click', '.icon-exclamation-sign', function(e){
                     stat_id = data['status'];
                 }
                 
-                $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\" data-sid=\""+sid+"\" data-rid=\""+data['id']+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+"</a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><b>Date</b>&nbsp;&nbsp;"+dateconv(data['ts'])+"<br /><br />"+data['msg'].replace(/\n/g, '<br />')+"</div></div></div>");
+                $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\" data-sid=\""+sid+"\" data-rid=\""+data['id']+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+" <div class=\"pull-right\">"+dateconv(data['ts'])+"</div></a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><pre class=\"pre-scrollable\">"+data['msg'].replace(/\n/g, '<br />')+"</pre></div></div></div>");
             });
         });
     
