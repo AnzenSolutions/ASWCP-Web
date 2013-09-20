@@ -29,6 +29,16 @@ class Api(BaseModel):
 	public = CharField(max_length=86)
 	server = ForeignKeyField(Servers, cascade=True)
 
+class Reports(BaseModel):
+    id = PrimaryKeyField()
+    server = ForeignKeyField(Servers, cascade=True)
+    ts = IntegerField()
+    msg = TextField()
+    unread = BooleanField()
+    title = CharField(max_length=50)
+    status = IntegerField()
+    
 users = Users
 servers = Servers
 api = Api
+reports = Reports
