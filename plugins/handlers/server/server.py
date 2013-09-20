@@ -13,10 +13,7 @@ class server(HandlersBase):
     JS_FILES = ["server_add"]
 
     def get(self, act):
-        if act != "":
-            self.show("server_%s" % act, msg="empty")
-        else:
-            self.redirect("/")
+        self.redirect("/")
 
     def post(self, act):
         if act == "add":
