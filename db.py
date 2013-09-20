@@ -38,7 +38,7 @@ class Reports(BaseModel):
     title = CharField(max_length=50)
     status = IntegerField()
     
-class JobQueue(BaseModel):
+class Job_Queue(BaseModel):
     id = PrimaryKeyField()
     server = ForeignKeyField(Servers, cascade=True)
     ts = IntegerField()
@@ -48,4 +48,4 @@ users = Users
 servers = Servers
 api = Api
 reports = Reports
-jobqueue = JobQueue
+jobqueue = Job_Queue
