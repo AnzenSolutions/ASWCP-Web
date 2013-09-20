@@ -37,6 +37,7 @@
 					</div>
 					<div class="btn-group">
 						<a href="/ssh/{{ data['id'] }}"><button class="server_ssh btn btn-small btn-inverse" value="{{ data['id'] }}" data-toggle="tooltip" data-title="SSH"><i class="icon-eye-open icon-white"></i></button></a>
+                        <a href="/reports/{{ data['id'] }}"><button class="reports btn btn-small btn-inverse" value="{{ data['id'] }}" data-toggle="tooltip" data-title="View Reports"><i class="icon-book icon-white"></i></button></a>
 						{% if data['has_api'] %}
 						<button class="reboot btn btn-small btn-inverse" value="{{ data['id'] }}" data-toggle="tooltip" data-title="Reboot"><i class="icon-refresh icon-white"></i></button>
 						<button class="update btn btn-small btn-inverse" value="{{ data['id'] }}" data-toggle="tooltip" data-title="Update"><i class="icon-download-alt icon-white"></i></button>

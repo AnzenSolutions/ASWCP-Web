@@ -88,7 +88,7 @@ var check_reports = function(){
     $("tr.server_entry").each(function(){
         var sid = $(this).attr("data-sid");
         
-        $.post("/",
+        $.post("/reports",
             {action : "check_report", server : sid},
             function (data){
                 var ret = data.split("|");
@@ -154,14 +154,13 @@ $(".update").click(function(e){
 	e.preventDefault();
 
 	var id = $(this).val();
-
+    
+    $("#update_server_dialog").modal("show");
+	$("#usd_srv").text($("#server_"+id+"_host").text());
+    $("#update_output").html("Once the system's update process has finished a report will be viewable.");
+            
 	$.post("/",
-		{action: "update_server", server : id},
-		function(data){
-			$("#update_server_dialog").modal("show");
-			$("#usd_srv").text($("#server_"+id+"_host").text());
-			$("#update_output").html(data.replace(/\n/g, '<br />'));
-		}
+		{action: "update_server", server : id}
 	);
 });
 
@@ -306,7 +305,7 @@ $(".server_entry").on('click', '.icon-exclamation-sign', function(e){
     
     $("#reports_dialog_body").html("<div class=\"accordion\" id=\"accordion2\">");
     
-    $.post("/",
+    $.post("/reports",
         {action : "fetch_reports", server : sid},
         function (data){
             data = JSON.parse(data);
@@ -329,7 +328,7 @@ $("#reports_dialog_body").on('click', '.accordion-heading', function(e){
     var sid = $(this).attr('data-sid');
     var rid = $(this).attr('data-rid');
     
-    $.post("/",
+    $.post("/reports",
     {action : "update_report", server : sid, report_id : rid},
     function (data){
         console.log("data: "+data);
