@@ -32,11 +32,10 @@ class reports(HandlersBase):
             elif act == "fetch_reports":
                 the_reps = []
                 
-                reports = self.db.reports.select().where((self.db.reports.unread == "t") & (self.db.reports.server == server)).order_by(self.db.reports.ts.desc()).dicts()
+                reports = self.db.reports.select().where((self.db.reports.unread == True) & (self.db.reports.server == server)).order_by(self.db.reports.ts.desc()).dicts()
                     
                 for report in reports.iterator():
                     the_reps.append(report)
-                    # self.write(json.dumps(report))
                 
                 self.write(json.dumps(the_reps))
         
@@ -54,5 +53,5 @@ class reports(HandlersBase):
                         self.write("1")
                     else:
                         self.write("0")
-        
+                        
         self.finish()

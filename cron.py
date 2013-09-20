@@ -146,19 +146,20 @@ class Jobs(object):
     def run(self, job):
         server_info = db.servers.select().where(db.servers.id==job.server).get()
         api_keys = db.api.select().where(db.api.server==job.server).get()
-
+        
         data = client(server_info.ipv4, msg=job.cmd, pub=api_keys.public, priv=api_keys.private)
-        print "> data:",data
         status = 1
 
         if data == False:
             status = 0
 
-        # try:
-        db.reports.create(server=job.server,ts=int(time()),msg=data,title=job.cmd,status=status)
-        self.remove_job(job.id)
-        # except:
-        #    db.database.rollback()
+        try:
+            db.reports.create(server=job.server,ts=int(time()),msg=data,title=job.cmd,status=status)
+            self.remove_job(job.id)
+            root.debug("Added report to stack.")
+        except:
+            root.error("Unable to add report to stack.")
+            db.database.rollback()
 
     def start(self):
         pydis.set("cron_next_run", sched.get_jobs()[0].next_run_time)
@@ -188,7 +189,7 @@ class Jobs(object):
 
 cjob = Jobs()
 
-sched = Scheduler(daemonic=True)
+sched = Scheduler(daemonic=False)
 sched.add_jobstore(ShelveJobStore('./cron.jobs'), 'file')
 sched.add_interval_job(cjob.start, seconds=10)
 sched.start()
