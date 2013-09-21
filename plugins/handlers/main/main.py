@@ -125,7 +125,7 @@ class MainHandler(HandlersBase):
                 done = None
                 
                 try:
-                    done = self.db.jobqueue.create(server=server,ts=int(time()),cmd="update").get()
+                    done = self.db.jobqueue.create(server=server,user=self.get_uid,ts=int(time()),cmd="update").get()
                 except:
                     self.db.database.rollback()
                 
@@ -137,7 +137,7 @@ class MainHandler(HandlersBase):
         elif act == "cc":
             if server != 0:
                 server_info = self.db.servers.select(self.db.servers.ipv4).where(self.db.servers.id==server).get()
-                self.db.jobqueue.create(server=server,ts=int(time()),cmd="sysexec %s" % self.get_argument("cmd", ""))
+                self.db.jobqueue.create(server=server,user=self.get_uid,ts=int(time()),cmd="sysexec %s" % self.get_argument("cmd", ""))
                 #except:
                 #    self.db.database.rollback()
                 
