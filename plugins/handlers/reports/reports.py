@@ -32,7 +32,13 @@ class reports(HandlersBase):
             elif act == "fetch_reports":
                 the_reps = []
                 
-                reports = self.db.reports.select(self.db.reports,self.db.users).join(self.db.users)
+                reports = self.db.reports.select(
+                    self.db.reports.id,
+                    self.db.reports.status,
+                    self.db.reports.ts,
+                    self.db.reports.title,
+                    self.db.reports.msg,
+                    self.db.users.username).join(self.db.users)
                 
                 if self.get_argument("type", 1) == 1:
                     reports = reports.where(self.db.reports.unread == True)
