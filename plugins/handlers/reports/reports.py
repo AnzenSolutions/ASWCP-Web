@@ -21,7 +21,7 @@ class reports(HandlersBase):
             if act == "check_report":
                 new_reports = 0
                 
-                new_reports = self.db.reports.select(self.db.reports.id).where((self.db.reports.unread == "t") & (self.db.reports.server == server)).count()
+                new_reports = self.db.reports.select(self.db.reports.id).where((self.db.reports.unread == True) & (self.db.reports.server == server)).count()
                 
                 if new_reports > 0:
                     self.write("%d|1" % server)
@@ -32,14 +32,19 @@ class reports(HandlersBase):
             elif act == "fetch_reports":
                 the_reps = []
                 
-                reports = self.db.reports.select()
+                reports = self.db.reports.select(
+                    self.db.reports.id,
+                    self.db.reports.status,
+                    self.db.reports.ts,
+                    self.db.reports.title,
+                    self.db.reports.msg,
+                    self.db.users.username).join(self.db.users)
                 
                 if self.get_argument("type", 1) == 1:
                     reports = reports.where(self.db.reports.unread == True)
                 
                 reports = reports.where(self.db.reports.server == server).order_by(self.db.reports.ts.desc()).dicts()
-                # reports = self.db.reports.select().where((self.db.reports.unread == True) & (self.db.reports.server == server)).order_by(self.db.reports.ts.desc()).dicts()
-                    
+                
                 for report in reports.iterator():
                     the_reps.append(report)
                 

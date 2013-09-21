@@ -110,7 +110,7 @@ var check_reports = function(){
 /**
  * Any unread reports will be flashed so the user is aware of them.
  **/
-// setInterval("$('.icon-exclamation-sign').toggle();", 250);
+setInterval("$('.icon-exclamation-sign').toggle();", 250);
 
 /**
  * Run update_status function every x seconds.
@@ -334,6 +334,7 @@ $(".reports").click(function(e){
         {action : "fetch_reports", server : sid, type : 0},
         function (dump){
             dump = JSON.parse(dump);
+            console.log(dump);
             var status = ["error", "success", "info"];
             var stat_id = 0;
             
@@ -342,7 +343,7 @@ $(".reports").click(function(e){
                     stat_id = data['status'];
                 }
                 
-                $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\" data-sid=\""+sid+"\" data-rid=\""+data['id']+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+" <div class=\"pull-right\">"+dateconv(data['ts'])+"</div></a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><pre class=\"pre-scrollable\">"+data['msg'].replace(/\n/g, '<br />')+"</pre></div></div></div>");
+                $("#reports_dialog_body").append("<div class=\"accordion-group\"><div class=\"accordion-heading alert-"+status[stat_id]+"\" data-sid=\""+sid+"\" data-rid=\""+data['id']+"\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion2\" href=\"#collapse"+data['id']+"\">"+data['title']+" <div class=\"pull-right\">"+dateconv(data['ts'])+"</div></a></div><div id=\"collapse"+data['id']+"\" class=\"accordion-body collapse\"><div class=\"accordion-inner\"><b>Report Made By</b>&nbsp;&nbsp;"+data['username']+"<br /><br /><pre class=\"pre-scrollable\">"+data['msg'].replace(/\n/g, '<br />')+"</pre></div></div></div>");
             });
         });
     

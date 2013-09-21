@@ -32,6 +32,7 @@ class Api(BaseModel):
 class Reports(BaseModel):
     id = PrimaryKeyField()
     server = ForeignKeyField(Servers, cascade=True)
+    user = ForeignKeyField(Users, cascade=True)
     ts = IntegerField()
     msg = TextField()
     unread = BooleanField()
@@ -41,6 +42,7 @@ class Reports(BaseModel):
 class Job_Queue(BaseModel):
     id = PrimaryKeyField()
     server = ForeignKeyField(Servers, cascade=True)
+    user = ForeignKeyField(Users, cascade=True)
     ts = IntegerField()
     cmd = CharField(max_length=256)
     
