@@ -154,7 +154,7 @@ class Jobs(object):
             status = 0
 
         try:
-            db.reports.create(server=job.server,ts=int(time()),msg=data,title=job.cmd,status=status)
+            db.reports.create(server=job.server,ts=int(time()),msg=data,title=job.cmd,status=status,user=job.user)
             self.remove_job(job.id)
             root.debug("Added report to stack.")
         except:
